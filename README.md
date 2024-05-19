@@ -25,6 +25,31 @@ minikube start
 ```
 
 ### 2.  Build the Docker Image and Run the Container
+#### 2.1 Frontend Web Service (From our other subject (web development))
+This Dockerfile sets up a containerized environment for a Python web application.
+
+- **Base Image:** Uses Python 3.12.3 as the base image.
+- **Working Directory:** Sets the working directory in the container to the current directory.
+- **Copy Files:** Copies all the contents of the current directory on the host machine into the container.
+- **Environment Variable:** Sets the environment variable `PYTHONUNBUFFERED` to `1` to ensure output is not buffered.
+- **Copy Requirements:** Copies the `requirements.txt` file into the container.
+- **Install Dependencies:** Installs the Python packages listed in `requirements.txt`.
+- **Command:** Defines the command to run the application: `python3 manage.py runserver 0.0.0.0:8000`, which starts the Django development server and makes it accessible on port 8000.
+
+This Dockerfile sets up a Python environment, installs dependencies, and runs a Django web server.
+
+#### 2.2 Backend API
+This Dockerfile sets up a containerized environment for a Python application.
+
+- **Base Image:** Uses Python 3.12.3 as the base image.
+- **Working Directory:** Sets the working directory in the container to the current directory.
+- **Copy Files:** Copies all the contents of the current directory on the host machine into the container.
+- **Environment Variable:** Sets the environment variable `PYTHONUNBUFFERED` to `1` to ensure output is not buffered.
+- **Copy Requirements:** Copies the `requirements.txt` file into the container.
+- **Install Dependencies:** Installs the Python packages listed in `requirements.txt`.
+- **Command:** Defines the command to run the application: `python3 app.py`, which starts the application using `app.py`.
+
+This Dockerfile sets up a Python environment, installs dependencies, and runs a Python application script.
 ```sh
 docker build -t academix-project .
 docker run -p 8000:8000 academix-project
@@ -50,11 +75,39 @@ Using the YAML files provided in the repository, create a deployment and service
 
 
 #### 4.1 [api.yaml](./api.yaml)
-This would create a deployment and service for the backend API called `academix-api` and attach it to the database service.
 
+This YAML configuration creates a Kubernetes Deployment and Service for the backend API called `academix-api`, and connects it to a MySQL database service. 
 
-#### 4.2 [deployment.yaml](./deployment.yaml) and [service.yaml](./service.yaml) 
-This would create a deployment and service for the frontend web service called `academix-project`.
+**Deployment:**
+- The Deployment, named `flask-api-deployment` and located in the `production` namespace, manages a single replica of the `flask-api` pod.
+- The pod uses the Docker image `pyzone49/academix_api:2` and listens on port 5000.
+- Environment variables are set to configure the connection to a MySQL database, including the host, port, database name, user, and password.
+- The restart policy is set to always restart the container if it fails.
+
+**Service:**
+- The Service, named `flask-api-service` and also in the `production` namespace, is of type `ClusterIP`.
+- It exposes the `flask-api` pod on port 5000 and routes traffic to the container's port 5000.
+- The Service uses a label selector to route traffic to the appropriate pod with the label `app: flask-api`.
+
+This setup ensures that the `academix-api` backend is deployed with a single replica in the `production` namespace and is connected to a MySQL database. The `ClusterIP` Service exposes the API internally within the Kubernetes cluster on port 5000, making it accessible to other services within the cluster.
+
+#### 4.2 [deployment.yaml](./deployment.yaml) and [service.yaml](./service.yaml)
+
+This YAML configuration creates a Kubernetes Deployment and Service for the frontend web service called `academix-project`.
+
+**Deployment:**
+- The Deployment, named `academix-deployment` and located in the `production` namespace, manages a single replica of the `academix-service` pod.
+- The pod uses the Docker image `pyzone49/academix_project:1` and listens on port 8000.
+- The `imagePullPolicy` is set to `IfNotPresent`, ensuring that the image is pulled only if it's not already present locally.
+- The pod is labeled with `app: academix-service`, and the Deployment uses this label to identify and manage the pod.
+- The restart policy is set to always restart the container if it fails.
+
+**Service:**
+- The Service, named `academix-service` and also in the `production` namespace, is of type `ClusterIP`.
+- It exposes the `academix-service` pod on port 8000 and routes traffic to the container's port 8000.
+- The Service uses a label selector to route traffic to the appropriate pod with the label `app: academix-service`.
+
+This setup ensures that the `academix-project` frontend web service is deployed with a single replica in the `production` namespace. The `ClusterIP` Service exposes the web service internally within the Kubernetes cluster on port 8000, making it accessible to other services within the cluster.
 
 
 #### 4.3 [db_deployment.yaml](./db_deployment.yaml) 
