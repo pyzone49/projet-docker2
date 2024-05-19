@@ -164,6 +164,6 @@ Here is the scores of the labs:
 
 - ## Tilelli BEKTACHE
 ![Capture d'écran 2024-05-19 134831](https://github.com/pyzone49/projet-docker2/assets/152429992/60b79033-b038-40c6-a01d-da19ad724947)
-For this lab, there was an error:
+For this lab, it was an error:
 ![Capture d'écran 2024-05-19 140402](https://github.com/pyzone49/projet-docker2/assets/152429992/f8689795-6c00-44e2-8417-fa4561f5ed23)
 
