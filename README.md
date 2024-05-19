@@ -154,3 +154,14 @@ kubectl port-forward svc/istio-ingressgateway -n istio-system 8080:80
 ```
 <p align="center"> <img src='./screenshots/Screenshot 2024-05-19 at 13.19.04.png' align="center" width="100%"> </p>
 
+# Google Labs
+
+Here is the scores of the labs:
+
+- **Yacine FLICI
+<img width="1153" alt="YACINE" src="https://github.com/pyzone49/projet-docker2/assets/152429992/fb83242f-1e6b-425a-a9f9-3af5876112d1">
+
+
+- **Tilelli BEKTACHE
+![Capture d'écran 2024-05-19 134831](https://github.com/pyzone49/projet-docker2/assets/152429992/60b79033-b038-40c6-a01d-da19ad724947)
+
